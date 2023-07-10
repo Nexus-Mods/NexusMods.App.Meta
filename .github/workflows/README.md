@@ -53,3 +53,14 @@ publish:
   secrets:
     NUGET_API_KEY: ${{ secrets.NUGET_KEY }}
 ```
+
+## MkDocs build and publish
+
+Source: [`mkdocs-build-and-deploy.yaml`](./mkdocs-build-and-deploy.yaml)
+
+Usage:
+
+```yaml
+build-and-deploy:
+  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/mkdocs-build-and-deploy.yaml@main
+```
