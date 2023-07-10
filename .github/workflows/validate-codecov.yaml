@@ -1,0 +1,22 @@
+name: Validate codecov.yaml
+
+on:
+  workflow_call:
+    inputs:
+      config-file:
+        type: string
+        required: false
+        default: "codecov.yaml"
+        description: "Path to the codecov.yaml config file"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate
+        shell: bash
+        run: |
+          curl --fail --data-binary @${{ inputs.config-file }} https://codecov.io/validate
