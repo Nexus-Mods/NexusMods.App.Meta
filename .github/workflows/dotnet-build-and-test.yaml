@@ -1,0 +1,63 @@
+name: .NET build and test
+
+on:
+  workflow_call:
+    inputs:
+      test-filter:
+        type: string
+        required: false
+        default: ""
+        description: "Filter for tests passed to the 'dotnet test' command using '--filter'"
+      test-logger:
+        type: string
+        required: false
+        default: "GitHubActions"
+        description: "Test logger passed to the 'dotnet test' command using '--logger'"
+      coverage-collector:
+        type: string
+        required: false
+        default: "XPlat Code Coverage;Format=opencover"
+        description: "Code coverage collection settings passed to the 'dotnet test' command using '--collect'"
+      extra-build-args:
+        type: string
+        required: false
+        default: ""
+        description: "Extra arguments passed to 'dotnet build'"
+      extra-test-args:
+        type: string
+        required: false
+        default: ""
+        description: "Extra arguments passed to 'dotnet test'"
+      codecov-flags:
+        type: string
+        required: false
+        default: ""
+        description: "HAS TO START WITH A COMMA! Additional flags for codecov. The current OS of the runner will always be added."
+
+jobs:
+  build-and-test:
+    name: Build and Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Print debug info
+        run: dotnet --info
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore ${{ inputs.extra-build.args }}
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --filter "${{ inputs.test-filter }}" --logger "${{ inputs.test-logger }}" --collect:"${{ inputs.coverage-collector }}" ${{ inputs.extra-test-args }}
+
+      - uses: codecov/codecov-action@v3
+        with:
+          flags: ${{ runner.os }}${{ inputs.codecov-flags }}
+          verbose: true

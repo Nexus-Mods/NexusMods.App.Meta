@@ -9,19 +9,31 @@ Source: [`validate-codecov.yaml`](./validate-codecov.yaml)
 Usage:
 
 ```yaml
-jobs:
-  validate:
-    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/validate-codecov.yaml@main
+validate:
+  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/validate-codecov.yaml@main
 ```
 
 You can also change the `config-file` input. It's `codecov.yaml` by default:
 
 ```yaml
-jobs:
-  validate:
-    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/validate-codecov.yaml@main
-    with:
-      config-file: .github/codecov.yaml
+validate:
+  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/validate-codecov.yaml@main
+  with:
+    config-file: .github/codecov.yaml
+```
+
+## .NET build and test
+
+Source: [`dotnet-build-and-test.yaml`](./dotnet-build-and-test.yaml)
+
+Usage:
+
+```yaml
+build-and-test:
+  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/dotnet-build-and-test.yaml@main
+  with:
+    # flags are comma separated
+    codecov-flags: ",clean_environment_tests"
 ```
 
 ## Publish NuGet Packages
@@ -32,12 +44,12 @@ Usage:
 
 ```yaml
 publish:
-needs: get-version
-uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/publish-nuget-packages.yaml@main
-with:
-  version: ${{ needs.get-version.outputs.version }}
-  use-nuget: true
-  use-github: false
-secrets:
-  NUGET_API_KEY: ${{ secrets.NUGET_KEY }}
+  needs: get-version
+  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/publish-nuget-packages.yaml@main
+  with:
+    version: ${{ needs.get-version.outputs.version }}
+    use-nuget: true
+    use-github: false
+  secrets:
+    NUGET_API_KEY: ${{ secrets.NUGET_KEY }}
 ```
