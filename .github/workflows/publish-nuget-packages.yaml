@@ -16,14 +16,11 @@ on:
         type: boolean
         required: false
         default: false
-        description: "Whether to push to the GitHub Package registry. Requires a valid GITHUB_TOKEN."
+        description: "Whether to push to the GitHub Package registry."
     secrets:
       NUGET_API_KEY:
         required: true
         description: "A valid NuGet API key. Required when pushing to NuGet."
-      GITHUB_TOKEN:
-        required: false
-        description: "A valid GitHub token. Required when pushing to the GitHub Package registry."
 
 jobs:
   build:

@@ -36,8 +36,8 @@ needs: get-version
 uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/publish-nuget-packages.yaml@main
 with:
   version: ${{ needs.get-version.outputs.version }}
-  use-nuget: true # requires NUGET_API_KEY secret
-  use-github: false # requires GITHUB_TOKEN secret
+  use-nuget: true
+  use-github: false
 secrets:
   NUGET_API_KEY: ${{ secrets.NUGET_KEY }}
 ```
