@@ -2,7 +2,7 @@
 
 These workflows can be used in different repositories. See [reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows#using-outputs-from-a-reusable-workflow) for more details.
 
-## `validate-codecov.yaml`
+## Validate codecov.yaml
 
 Source: [`validate-codecov.yaml`](./validate-codecov.yaml)
 
@@ -22,4 +22,22 @@ jobs:
     uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/validate-codecov.yaml@main
     with:
       config-file: .github/codecov.yaml
+```
+
+## Publish NuGet Packages
+
+Source: [`publish-nuget-packages.yaml`](./publish-nuget-packages.yaml)
+
+Usage:
+
+```yaml
+publish:
+needs: get-version
+uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/publish-nuget-packages.yaml@main
+with:
+  version: ${{ needs.get-version.outputs.version }}
+  use-nuget: true # requires NUGET_API_KEY secret
+  use-github: false # requires GITHUB_TOKEN secret
+secrets:
+  NUGET_API_KEY: ${{ secrets.NUGET_KEY }}
 ```

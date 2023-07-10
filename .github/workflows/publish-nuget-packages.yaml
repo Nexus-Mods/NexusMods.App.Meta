@@ -1,0 +1,65 @@
+name: Publish NuGet Packages
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+        description: "The version of the packages."
+      use-nuget:
+        type: boolean
+        required: false
+        default: true
+        description: "Whether to push to the NuGet registry. Requires a valid NUGET_API_KEY."
+      use-github:
+        type: boolean
+        required: false
+        default: false
+        description: "Whether to push to the GitHub Package registry. Requires a valid GITHUB_TOKEN."
+    secrets:
+      NUGET_API_KEY:
+        required: true
+        description: "A valid NuGet API key. Required when pushing to NuGet."
+      GITHUB_TOKEN:
+        required: false
+        description: "A valid GitHub token. Required when pushing to the GitHub Package registry."
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Print debug info
+        run: dotnet --info
+
+      - name: Pack
+        run: dotnet pack -p:Version="${{ inputs.version }}" -p:RepositoryBranch=${{ github.ref_name }} -p:RepositoryCommit="${{ github.sha }}"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: nuget-packages-${{ inputs.version }}
+          path: |
+            **/*.nupkg
+            **/*.snupkg
+          if-no-files-found: error
+
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nuget-packages-${{ inputs.version }}
+
+      - name: Push to NuGet
+        if: inputs.use-nuget
+        run: dotnet nuget push **/*.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+
+      - name: Push to GitHub
+        if: inputs.use-github
+        run: dotnet nuget push **/*.nupkg --skip-duplicate --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
