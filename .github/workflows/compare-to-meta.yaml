@@ -1,0 +1,28 @@
+name: Match files from meta-repository
+
+on:
+  workflow_call:
+    inputs:
+      script-path:
+        type: string
+        required: false
+        default: "extern/meta/scripts/run-diff.ps1"
+        description: "Path to the run-diff.ps1 script from the meta repository"
+      source-path:
+        type: string
+        required: false
+        default: "extern/meta/root-directory"
+        description: "Path to the root-directory from the meta repository"
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+
+      - name: Run diff
+        shell: pwsh
+        run: ${{ inputs.script-path }} ${{ inputs.source-path }} ${{ github.workspace }}

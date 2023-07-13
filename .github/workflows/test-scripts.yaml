@@ -1,0 +1,27 @@
+name: Test Scripts
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/test-scripts.yaml"
+      - "scripts/**"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/test-scripts.yaml"
+      - "scripts/**"
+
+jobs:
+  run-diff:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Prepare directory
+        run: cp -r root-directory run-diff-test
+
+      - name: Run script
+        shell: pwsh
+        run: scripts/run-diff.ps1 root-directory run-diff-test

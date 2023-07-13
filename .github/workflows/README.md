@@ -64,3 +64,14 @@ Usage:
 build-and-deploy:
   uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/mkdocs-build-and-deploy.yaml@main
 ```
+
+## Match files from meta-repository
+
+Source: [`compare-to-meta.yaml`](./compare-to-meta.yaml)
+
+Usage:
+
+```yaml
+match-meta:
+  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/compare-to-meta.yaml@main
+```
