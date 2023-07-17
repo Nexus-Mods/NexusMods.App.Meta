@@ -1,0 +1,20 @@
+# This is not reusable, this runs on the meta-repo itself.
+name: Test .NET build and test
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/dotnet-build-and-test.yaml"
+      - "test-files/**"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/dotnet-build-and-test.yaml"
+      - "test-files/**"
+
+jobs:
+  run-test:
+    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/dotnet-build-and-test.yaml@11cc3a5356f549813a012e67082555ad094ca3d1
+    with:
+      extra-test-args: "test-files/DummyTest/DummyTest.csproj"
