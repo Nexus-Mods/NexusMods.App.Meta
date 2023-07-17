@@ -1,0 +1,43 @@
+name: Update meta-submodule
+
+on:
+  workflow_call:
+    inputs:
+      script-path:
+        type: string
+        required: false
+        default: "extern/meta/scripts/copy-all.ps1"
+        description: "Path to the copy-all.ps1 script from the meta repository"
+      source-path:
+        type: string
+        required: false
+        default: "extern/meta/root-directory"
+        description: "Path to the root-directory from the meta repository"
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+
+      - name: Update submodules
+        run: git submodule update --recursive --remote
+
+      - name: Update meta files
+        shell: pwsh
+        run: ${{ inputs.script-path }} ${{ inputs.source-path }} ${{ github.workspace }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "Update submodules"
+          commit-message: "Update submodules"
+          branch: "automated/update-submodules"
+          delete-branch: true

@@ -61,8 +61,13 @@ Source: [`mkdocs-build-and-deploy.yaml`](./mkdocs-build-and-deploy.yaml)
 Usage:
 
 ```yaml
-build-and-deploy:
-  uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/mkdocs-build-and-deploy.yaml@main
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/mkdocs-build-and-deploy.yaml@main
 ```
 
 ## Match files from meta-repository
@@ -74,4 +79,20 @@ Usage:
 ```yaml
 match-meta:
   uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/compare-to-meta.yaml@main
+```
+
+## Update submodules
+
+Source: [`update-from-meta.yaml`](./update-from-meta.yaml)
+
+Usage:
+
+```yaml
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  update:
+    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/update-from-meta.yaml@main
 ```
