@@ -6,7 +6,7 @@ on:
       test-filter:
         type: string
         required: false
-        default: ""
+        default: "Category!=Disabled"
         description: "Filter for tests passed to the 'dotnet test' command using '--filter'"
       test-logger:
         type: string
