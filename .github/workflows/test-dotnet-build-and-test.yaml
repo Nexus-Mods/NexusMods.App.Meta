@@ -15,6 +15,6 @@ on:
 
 jobs:
   run-test:
-    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/dotnet-build-and-test.yaml@11cc3a5356f549813a012e67082555ad094ca3d1
+    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/dotnet-build-and-test.yaml@780d2001be902a9523de8331da2c77c687abbddb
     with:
-      extra-test-args: "test-files/DummyTest/DummyTest.csproj"
+      project-file: "test-files/DummyTest/DummyTest.csproj"
