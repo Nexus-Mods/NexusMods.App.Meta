@@ -3,6 +3,11 @@ name: .NET build and test
 on:
   workflow_call:
     inputs:
+      project-file:
+        type: string
+        required: false
+        default: ""
+        description: "Path to the .csproj or .sln file"
       test-filter:
         type: string
         required: false
@@ -56,13 +61,13 @@ jobs:
         run: dotnet --info
 
       - name: Install dependencies
-        run: dotnet restore
+        run: dotnet restore ${{ inputs.project-file }}
 
       - name: Build
-        run: dotnet build --no-restore ${{ inputs.extra-build.args }}
+        run: dotnet build ${{ inputs.project-file }} --no-restore ${{ inputs.extra-build.args }}
 
       - name: Test
-        run: dotnet test --no-restore --verbosity normal --filter "${{ inputs.test-filter }}" --logger "${{ inputs.test-logger }}" --collect:"${{ inputs.coverage-collector }}" ${{ inputs.extra-test-args }}
+        run: dotnet test ${{ inputs.project-file }} --no-restore --verbosity normal --filter "${{ inputs.test-filter }}" --logger "${{ inputs.test-logger }}" --collect:"${{ inputs.coverage-collector }}" ${{ inputs.extra-test-args }}
 
       - uses: codecov/codecov-action@v3
         if: inputs.use-codecov
