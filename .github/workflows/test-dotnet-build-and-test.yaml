@@ -17,7 +17,7 @@ on:
 
 jobs:
   run-test:
-    uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/dotnet-build-and-test.yaml@780d2001be902a9523de8331da2c77c687abbddb
+    uses: ./.github/workflows/dotnet-build-and-test.yaml
     with:
       project-file: "test-files/DummyTest/DummyTest.csproj"
       use-codecov: false
