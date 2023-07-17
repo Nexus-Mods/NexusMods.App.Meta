@@ -1,0 +1,23 @@
+# This is not reusable, this runs on the meta-repo itself.
+name: Test .NET build and test
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/dotnet-build-and-test.yaml"
+      - ".github/workflows/test-dotnet-build-and-test.yaml"
+      - "test-files/**"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/dotnet-build-and-test.yaml"
+      - ".github/workflows/test-dotnet-build-and-test.yaml"
+      - "test-files/**"
+
+jobs:
+  run-test:
+    uses: ./.github/workflows/dotnet-build-and-test.yaml
+    with:
+      project-file: "test-files/DummyTest/DummyTest.csproj"
+      use-codecov: false
