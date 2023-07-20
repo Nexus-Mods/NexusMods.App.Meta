@@ -41,3 +41,5 @@ jobs:
           commit-message: "Update submodules"
           branch: "automated/update-submodules"
           delete-branch: true
+          committer: "GitHub <noreply@github.com>"
+          author: "GitHub <noreply@github.com>"
