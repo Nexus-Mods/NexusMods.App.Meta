@@ -1,0 +1,76 @@
+name: .NET build and test
+
+on:
+  workflow_call:
+    inputs:
+      project-file:
+        type: string
+        required: false
+        default: ""
+        description: "Path to the .csproj or .sln file"
+      test-filter:
+        type: string
+        required: false
+        default: "Category!=Disabled"
+        description: "Filter for tests passed to the 'dotnet test' command using '--filter'"
+      test-logger:
+        type: string
+        required: false
+        default: "GitHubActions"
+        description: "Test logger passed to the 'dotnet test' command using '--logger'"
+      coverage-collector:
+        type: string
+        required: false
+        default: "XPlat Code Coverage;Format=opencover"
+        description: "Code coverage collection settings passed to the 'dotnet test' command using '--collect'"
+      extra-build-args:
+        type: string
+        required: false
+        default: ""
+        description: "Extra arguments passed to 'dotnet build'"
+      extra-test-args:
+        type: string
+        required: false
+        default: ""
+        description: "Extra arguments passed to 'dotnet test'"
+      use-codecov:
+        type: boolean
+        required: false
+        default: true
+        description: "Whether or not to use codecov for code coverage"
+      codecov-flags:
+        type: string
+        required: false
+        default: ""
+        description: "HAS TO START WITH A COMMA! Additional flags for codecov. The current OS of the runner will always be added."
+
+jobs:
+  build-and-test:
+    name: Build and Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ Linux, Windows ]
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+
+      - name: Print debug info
+        run: dotnet --info
+
+      - name: Install dependencies
+        run: dotnet restore ${{ inputs.project-file }}
+
+      - name: Build
+        run: dotnet build ${{ inputs.project-file }} --no-restore ${{ inputs.extra-build.args }}
+
+      - name: Test
+        run: dotnet test ${{ inputs.project-file }} --no-restore --verbosity normal --filter "${{ inputs.test-filter }}" --logger "${{ inputs.test-logger }}" --collect:"${{ inputs.coverage-collector }}" ${{ inputs.extra-test-args }}
+
+      - uses: codecov/codecov-action@v3
+        if: inputs.use-codecov
+        with:
+          flags: ${{ runner.os }}${{ inputs.codecov-flags }}
+          verbose: true
