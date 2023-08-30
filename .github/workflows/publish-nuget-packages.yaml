@@ -35,7 +35,7 @@ jobs:
         run: dotnet --info
 
       - name: Pack
-        run: dotnet pack -p:Version="${{ inputs.version }}" -p:RepositoryBranch=${{ github.ref_name }} -p:RepositoryCommit="${{ github.sha }}"
+        run: dotnet pack -c Release -p:Version="${{ inputs.version }}" -p:RepositoryBranch=${{ github.ref_name }} -p:RepositoryCommit="${{ github.sha }}"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
