@@ -35,7 +35,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Build
-        uses: Tiryoh/actions-mkdocs@v0.20.0
+        uses: Tiryoh/actions-mkdocs@v0.23.0
         with:
           mkdocs_version: ${{ inputs.mkdocs-version }}
           requirements: ${{ inputs.requirements-file }}
