@@ -61,12 +61,12 @@ Source: [`mkdocs-build-and-deploy.yaml`](./mkdocs-build-and-deploy.yaml)
 Usage:
 
 ```yaml
-permissions:
-  pages: write
-  id-token: write
-
 jobs:
   build-and-deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     uses: Nexus-Mods/NexusMods.App.Meta/.github/workflows/mkdocs-build-and-deploy.yaml@main
 ```
 
