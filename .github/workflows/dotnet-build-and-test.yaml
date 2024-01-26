@@ -74,9 +74,3 @@ jobs:
 
       - name: Test
         run: dotnet test ${{ inputs.project-file }} --no-restore --verbosity normal --filter "${{ inputs.test-filter }}" --logger "${{ inputs.test-logger }}" --collect:"${{ inputs.coverage-collector }}" ${{ inputs.extra-test-args }}
-
-      - uses: codecov/codecov-action@v3
-        if: inputs.use-codecov
-        with:
-          flags: ${{ runner.os }}${{ inputs.codecov-flags }}
-          verbose: true
