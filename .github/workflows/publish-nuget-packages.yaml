@@ -37,6 +37,12 @@ jobs:
           dotnet-version: '9.0.x'
           include-prerelease: true
 
+      - name: Setup .NET Core SDK 8.0.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          include-prerelease: true          
+
       - name: Print debug info
         run: dotnet --info
 
