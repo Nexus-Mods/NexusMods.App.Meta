@@ -50,7 +50,7 @@ jobs:
         run: dotnet pack -c Release -p:Version="${{ inputs.version }}" -p:RepositoryBranch=${{ github.ref_name }} -p:RepositoryCommit="${{ github.sha }}"
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nuget-packages-${{ inputs.version }}
           path: |
@@ -64,7 +64,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: nuget-packages-${{ inputs.version }}
 
