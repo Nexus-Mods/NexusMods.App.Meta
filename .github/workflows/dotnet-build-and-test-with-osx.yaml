@@ -74,4 +74,7 @@ jobs:
         run: dotnet build ${{ inputs.project-file }} --no-restore ${{ inputs.extra-build.args }}
 
       - name: Test
+        env:
+          # https://github.com/microsoft/vstest/issues/2952#issuecomment-2234253765
+          VSTEST_TESTHOST_SHUTDOWN_TIMEOUT: 10000
         run: dotnet test ${{ inputs.project-file }} --no-restore --verbosity normal --filter "${{ inputs.test-filter }}" --logger "${{ inputs.test-logger }}" ${{ inputs.extra-test-args }}
