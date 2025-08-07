@@ -50,9 +50,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest, macos-13 ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        if: runner.os == 'Linux'
+        uses: jlumbroso/free-disk-space@main
       - uses: actions/checkout@v3
         with:
           submodules: "recursive"
